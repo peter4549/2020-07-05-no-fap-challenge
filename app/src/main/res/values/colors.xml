@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <!-- Tab Icon -->
+    <color name="colorTabIconSelected">#FFFFFF</color>
+    <color name="colorTabIconUnselected">#AAAAAA</color>
+
+    <!-- Lamp -->
+    <color name="colorOldGold">#C9B037</color>
+    <color name="colorLightSilver">#D7D7D7</color>
+    <color name="colorBronze">#AD8A56</color>
+</resources>
