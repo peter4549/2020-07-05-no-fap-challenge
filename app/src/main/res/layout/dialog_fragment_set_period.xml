@@ -29,7 +29,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.7"
-            android:hint="period"/>
+            android:hint="period"
+            android:inputType="numberDecimal"/>
 
         <Button
             android:id="@+id/button_set_period"
