@@ -13,6 +13,7 @@
             android:id="@+id/text_view_period"
             android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:layout_above="@id/progress_bar"
             android:gravity="center"/>
 
         <ProgressBar
@@ -46,19 +47,14 @@
             <ImageView
                 android:id="@+id/image_view_stop"
                 style="@style/TimerImageViewTheme"
-                android:layout_marginEnd="40dp"
+                android:layout_marginEnd="120dp"
                 android:src="@drawable/ic_pause_64dp" />
 
             <ImageView
                 android:id="@+id/image_view_start"
                 style="@style/TimerImageViewTheme"
-                android:layout_marginEnd="40dp"
+                android:layout_gravity="end"
                 android:src="@drawable/ic_start_64dp" />
-
-            <ImageView
-                android:id="@+id/image_view_set_period"
-                style="@style/TimerImageViewTheme"
-                android:src="@drawable/ic_set_period_64dp" />
 
         </LinearLayout>
 

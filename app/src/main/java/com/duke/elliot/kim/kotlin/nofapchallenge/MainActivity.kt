@@ -3,11 +3,14 @@ package com.duke.elliot.kim.kotlin.nofapchallenge
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.content.ContextCompat
+import com.duke.elliot.kim.kotlin.nofapchallenge.fragments.ProgressFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    val progressFragment = ProgressFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,15 +52,16 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-        companion object {
+    companion object {
+        var challenging = false
 
-            private val tabIcons = arrayOf(
-                R.drawable.ic_tab_person_24dp,
-                R.drawable.ic_tab_person_24dp,
-                R.drawable.ic_tab_person_24dp,
-                R.drawable.ic_tab_person_24dp
-            )
+        private val tabIcons = arrayOf(
+            R.drawable.ic_tab_person_24dp,
+            R.drawable.ic_tab_person_24dp,
+            R.drawable.ic_tab_person_24dp,
+            R.drawable.ic_tab_person_24dp
+        )
 
-            private val tabTexts = arrayOf("진행상황", "순위", "게시판", "내정보")
-        }
+        private val tabTexts = arrayOf("진행상황", "순위", "게시판", "내정보")
+    }
 }

@@ -5,10 +5,9 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.duke.elliot.kim.kotlin.nofapchallenge.fragments.BoardFragment
 import com.duke.elliot.kim.kotlin.nofapchallenge.fragments.HistoryFragment
-import com.duke.elliot.kim.kotlin.nofapchallenge.fragments.ProgressFragment
 import com.duke.elliot.kim.kotlin.nofapchallenge.fragments.RankingFragment
 
-class PagerFragmentStateAdapter(fragmentActivity: FragmentActivity)
+class PagerFragmentStateAdapter(private val fragmentActivity: FragmentActivity)
     : FragmentStateAdapter(fragmentActivity) {
 
     override fun getItemCount(): Int {
@@ -17,7 +16,7 @@ class PagerFragmentStateAdapter(fragmentActivity: FragmentActivity)
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> ProgressFragment()
+            0 -> (fragmentActivity as MainActivity).progressFragment
             1 -> RankingFragment()
             2 -> BoardFragment()
             3 -> HistoryFragment()

@@ -17,6 +17,7 @@ class SetPeriodDialogFragment : DialogFragment() {
 
         dialog.button_set_period.setOnClickListener {
             setPeriod()
+            onSetPeriodListener.startChallenge()
         }
 
         return dialog
@@ -24,6 +25,7 @@ class SetPeriodDialogFragment : DialogFragment() {
 
     interface OnSetPeriodListener {
         fun setPeriod(period: Int)
+        fun startChallenge()
     }
 
     fun setListener(onSetPeriodListener: OnSetPeriodListener) {
