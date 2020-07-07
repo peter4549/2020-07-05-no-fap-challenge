@@ -20,7 +20,7 @@ class ProgressFragment : Fragment(), SetPeriodDialogFragment.OnSetPeriodListener
     private lateinit var setPeriodDialogFragment: SetPeriodDialogFragment
     private var targetPeriod = 0
     private var progressInterval = 0
-    private var dateCount = 1
+    private var dateCount = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,7 +51,7 @@ class ProgressFragment : Fragment(), SetPeriodDialogFragment.OnSetPeriodListener
     override fun setPeriod(period: Int) {
         this.targetPeriod = period
         progressInterval = (this.targetPeriod / 100F).roundToInt()
-        dateCount = 1
+        dateCount = 0
     }
 
     override fun startChallenge() {
@@ -77,12 +77,28 @@ class ProgressFragment : Fragment(), SetPeriodDialogFragment.OnSetPeriodListener
         MainActivity.challenging = preferences.getBoolean(KEY_CHALLENGING, false)
         targetPeriod = preferences.getInt(KEY_TARGET_PERIOD, 0)
         progressInterval = preferences.getInt(KEY_PROGRESS_INTERVAL, 0)
-        dateCount = preferences.getInt(KEY_DATE_COUNT, 1)
+        dateCount = preferences.getInt(KEY_DATE_COUNT, 0)
+
+        checkProgress()
+    }
+
+    private fun checkProgress() {
+        if (targetPeriod == dateCount)
+            runSuccessEvent()
+    }
+
+    private fun runSuccessEvent() {
+        TODO("Not yet implemented")
     }
 
     private fun setUI() {
         text_view_period.text = this.targetPeriod.toString()
         progress_bar.progress = dateCount * progressInterval
+    }
+
+    fun updateProgress() {
+        loadProgress()
+        setUI()
     }
 
     private fun showConfirmationDialog() {
@@ -98,7 +114,7 @@ class ProgressFragment : Fragment(), SetPeriodDialogFragment.OnSetPeriodListener
         MainActivity.challenging = false
         targetPeriod = 0
         progressInterval = 0
-        dateCount = 1
+        dateCount = 0
 
         val preferences =
             requireContext().getSharedPreferences(PROGRESS_PREFERENCES, Context.MODE_PRIVATE)
@@ -107,7 +123,7 @@ class ProgressFragment : Fragment(), SetPeriodDialogFragment.OnSetPeriodListener
         editor.putBoolean(KEY_CHALLENGING, MainActivity.challenging)
         editor.putInt(KEY_TARGET_PERIOD, 0)
         editor.putInt(KEY_PROGRESS_INTERVAL, 0)
-        editor.putInt(KEY_DATE_COUNT, 1)
+        editor.putInt(KEY_DATE_COUNT, 0)
         editor.apply()
 
         clearUI()

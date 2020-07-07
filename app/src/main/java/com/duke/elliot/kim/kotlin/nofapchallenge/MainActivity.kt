@@ -1,14 +1,25 @@
 package com.duke.elliot.kim.kotlin.nofapchallenge
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.content.ContextCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.duke.elliot.kim.kotlin.nofapchallenge.fragments.ProgressFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    private val dateUpdateReceiver = object: BroadcastReceiver() {
+        override fun onReceive(p0: Context?, p1: Intent?) {
+            progressFragment.updateProgress()
+        }
+    }
 
     val progressFragment = ProgressFragment()
 
@@ -52,8 +63,25 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        isAppRunning = true
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(dateUpdateReceiver, IntentFilter(ACTION_DATE_UPDATED))
+    }
+
+    override fun onStop() {
+        LocalBroadcastManager.getInstance(this)
+            .unregisterReceiver(dateUpdateReceiver)
+        isAppRunning = false
+        super.onStop()
+    }
+
     companion object {
+        var isAppRunning = false
         var challenging = false
+
+        const val ACTION_DATE_UPDATED = "action_date_updated"
 
         private val tabIcons = arrayOf(
             R.drawable.ic_tab_person_24dp,
