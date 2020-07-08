@@ -27,7 +27,7 @@
         </receiver>
 
         <service android:name=".services.UpdateJobIntentService"
-            android:exported="false"/>
+            android:exported="true"/>
     </application>
 
 </manifest>

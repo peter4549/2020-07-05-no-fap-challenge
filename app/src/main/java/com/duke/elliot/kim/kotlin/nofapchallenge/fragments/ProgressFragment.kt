@@ -8,13 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import com.duke.elliot.kim.kotlin.nofapchallenge.*
+import com.duke.elliot.kim.kotlin.nofapchallenge.model.History
 
 import kotlinx.android.synthetic.main.fragment_progress.*
 import kotlin.math.roundToInt
 
-/**
- * A simple [Fragment] subclass.
- */
 class ProgressFragment : Fragment(), SetPeriodDialogFragment.OnSetPeriodListener {
 
     private lateinit var setPeriodDialogFragment: SetPeriodDialogFragment
@@ -59,6 +57,10 @@ class ProgressFragment : Fragment(), SetPeriodDialogFragment.OnSetPeriodListener
 
         setUI()
 
+        val history = History(targetPeriod)
+        history.status = CHALLENGING
+        (activity as MainActivity).viewModel.insert(history)
+
         val preferences =
             requireContext().getSharedPreferences(PROGRESS_PREFERENCES, Context.MODE_PRIVATE)
         val editor = preferences.edit()
@@ -88,10 +90,11 @@ class ProgressFragment : Fragment(), SetPeriodDialogFragment.OnSetPeriodListener
     }
 
     private fun runSuccessEvent() {
-        TODO("Not yet implemented")
+
     }
 
     private fun setUI() {
+        text_view_date_count.text = dateCount.toString()
         text_view_period.text = this.targetPeriod.toString()
         progress_bar.progress = dateCount * progressInterval
     }

@@ -1,10 +1,10 @@
-package com.duke.elliot.kim.kotlin.nofapchallenge
+package com.duke.elliot.kim.kotlin.nofapchallenge.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.duke.elliot.kim.kotlin.nofapchallenge.MainActivity
 import com.duke.elliot.kim.kotlin.nofapchallenge.fragments.BoardFragment
-import com.duke.elliot.kim.kotlin.nofapchallenge.fragments.HistoryFragment
 import com.duke.elliot.kim.kotlin.nofapchallenge.fragments.RankingFragment
 
 class PagerFragmentStateAdapter(private val fragmentActivity: FragmentActivity)
@@ -19,7 +19,7 @@ class PagerFragmentStateAdapter(private val fragmentActivity: FragmentActivity)
             0 -> (fragmentActivity as MainActivity).progressFragment
             1 -> RankingFragment()
             2 -> BoardFragment()
-            3 -> HistoryFragment()
+            3 -> (fragmentActivity as MainActivity).historyFragment
             else -> throw Exception("Invalid fragment")
         }
     }

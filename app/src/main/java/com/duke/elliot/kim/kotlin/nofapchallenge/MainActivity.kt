@@ -7,13 +7,23 @@ import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.duke.elliot.kim.kotlin.nofapchallenge.adapters.PagerFragmentStateAdapter
+import com.duke.elliot.kim.kotlin.nofapchallenge.adapters.RecyclerViewAdapter
+import com.duke.elliot.kim.kotlin.nofapchallenge.fragments.HistoryFragment
 import com.duke.elliot.kim.kotlin.nofapchallenge.fragments.ProgressFragment
+import com.duke.elliot.kim.kotlin.nofapchallenge.model.HistoryViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var viewModel: HistoryViewModel
+    private var init = true
+    val progressFragment = ProgressFragment()
+    var historyFragment = HistoryFragment()
 
     private val dateUpdateReceiver = object: BroadcastReceiver() {
         override fun onReceive(p0: Context?, p1: Intent?) {
@@ -21,13 +31,30 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    val progressFragment = ProgressFragment()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        view_pager.adapter = PagerFragmentStateAdapter(this)
+        val viewModelFactory = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        viewModel = ViewModelProvider(this, viewModelFactory)[HistoryViewModel::class.java]
+
+        viewModel.getAll().observe(this@MainActivity, androidx.lifecycle.Observer { histories ->
+            if (init) {
+                historyFragment.setRecyclerViewAdapter(RecyclerViewAdapter(histories))
+                init = false
+            } else {
+                when (viewModelOperation) {
+                    ViewModelOperation.INSERT -> historyFragment.insert(histories[histories.size - 1])
+                    ViewModelOperation.UPDATE -> historyFragment.update(viewModel.targetHistory)
+                    ViewModelOperation.DELETE -> historyFragment.remove(viewModel.targetHistory)
+                }
+            }
+        })
+
+        view_pager.adapter =
+            PagerFragmentStateAdapter(
+                this
+            )
 
         TabLayoutMediator(tab_layout, view_pager) { tab, position ->
             tab.text = tabTexts[position]
@@ -80,6 +107,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         var isAppRunning = false
         var challenging = false
+        var viewModelOperation: ViewModelOperation? = null
 
         const val ACTION_DATE_UPDATED = "action_date_updated"
 

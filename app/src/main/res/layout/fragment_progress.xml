@@ -10,6 +10,13 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/text_view_date_count"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_above="@id/text_view_period"
+            android:gravity="center"/>
+
+        <TextView
             android:id="@+id/text_view_period"
             android:layout_width="match_parent"
             android:layout_height="48dp"

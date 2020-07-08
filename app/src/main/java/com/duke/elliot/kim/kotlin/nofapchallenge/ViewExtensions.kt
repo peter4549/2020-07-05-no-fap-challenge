@@ -80,3 +80,4 @@ enum class Mode {
             OVERLAY -> PorterDuff.Mode.OVERLAY
         }
 }
+
