@@ -15,7 +15,10 @@ class DateChangeReceiver : BroadcastReceiver() {
     }
 
     private fun startUpdateJobIntentService(context: Context?) {
-        val intent = Intent(context, UpdateJobIntentService::class.java)
-        context?.startService(intent)
+        if (context != null) {
+            val intent = Intent(context, UpdateJobIntentService::class.java)
+            context.startService(intent)
+            UpdateJobIntentService().enqueueWork(context, intent)
+        }
     }
 }

@@ -11,6 +11,10 @@ import com.duke.elliot.kim.kotlin.nofapchallenge.PROGRESS_PREFERENCES
 
 class UpdateJobIntentService : JobIntentService() {
 
+    fun enqueueWork(context: Context, work: Intent) {
+        enqueueWork(context, UpdateJobIntentService::class.java, JOB_ID, work)
+    }
+
     override fun onHandleWork(intent: Intent) {
         val preferences = getSharedPreferences(PROGRESS_PREFERENCES, Context.MODE_PRIVATE)
         val editor = preferences.edit()
@@ -27,5 +31,9 @@ class UpdateJobIntentService : JobIntentService() {
     private fun notifyDateUpdate() {
         val intent = Intent(MainActivity.ACTION_DATE_UPDATED)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+    }
+
+    companion object {
+        const val JOB_ID = 1001
     }
 }

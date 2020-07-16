@@ -4,7 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.duke.elliot.kim.kotlin.nofapchallenge.R
-import kotlinx.android.synthetic.main.dialog_fragment_set_period.*
+import kotlinx.android.synthetic.main.fragment_set_period_dialog.*
 
 class SetPeriodDialogFragment : DialogFragment() {
 
@@ -13,7 +13,7 @@ class SetPeriodDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         val dialog = Dialog(requireContext())
-        dialog.setContentView(R.layout.dialog_fragment_set_period)
+        dialog.setContentView(R.layout.fragment_set_period_dialog)
 
         dialog.button_set_period.setOnClickListener {
             setPeriod()

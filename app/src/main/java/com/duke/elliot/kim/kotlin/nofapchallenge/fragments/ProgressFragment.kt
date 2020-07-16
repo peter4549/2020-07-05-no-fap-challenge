@@ -1,6 +1,7 @@
 package com.duke.elliot.kim.kotlin.nofapchallenge.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import com.duke.elliot.kim.kotlin.nofapchallenge.*
 import com.duke.elliot.kim.kotlin.nofapchallenge.model.History
+import com.duke.elliot.kim.kotlin.nofapchallenge.services.UpdateJobIntentService
 
 import kotlinx.android.synthetic.main.fragment_progress.*
 import kotlin.math.roundToInt
@@ -19,6 +21,8 @@ class ProgressFragment : Fragment(), SetPeriodDialogFragment.OnSetPeriodListener
     private var targetPeriod = 0
     private var progressInterval = 0
     private var dateCount = 0
+    private var recode = 0
+    private var title = Titles.STEP_00
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +47,10 @@ class ProgressFragment : Fragment(), SetPeriodDialogFragment.OnSetPeriodListener
         image_view_stop.setOnClickListener {
             if (MainActivity.challenging)
                 showConfirmationDialog()
+        }
+
+        button_test.setOnClickListener {
+            serviceTest()
         }
     }
 
@@ -80,6 +88,8 @@ class ProgressFragment : Fragment(), SetPeriodDialogFragment.OnSetPeriodListener
         targetPeriod = preferences.getInt(KEY_TARGET_PERIOD, 0)
         progressInterval = preferences.getInt(KEY_PROGRESS_INTERVAL, 0)
         dateCount = preferences.getInt(KEY_DATE_COUNT, 0)
+        recode = preferences.getInt(KEY_RECODE, 0)
+        title = preferences.getString(KEY_TITLE, Titles.STEP_00)!!
 
         checkProgress()
     }
@@ -90,7 +100,63 @@ class ProgressFragment : Fragment(), SetPeriodDialogFragment.OnSetPeriodListener
     }
 
     private fun runSuccessEvent() {
+        val originalTitle = title
 
+        if (targetPeriod > recode) {
+            when (targetPeriod) {
+                in Periods.STEP_00 until Periods.STEP_01 -> {
+                    title = Titles.STEP_00
+                }
+                in Periods.STEP_01 until Periods.STEP_02 -> {
+                    title = Titles.STEP_01
+                }
+                in Periods.STEP_02 until Periods.STEP_03 -> {
+                    title = Titles.STEP_02
+                }
+                in Periods.STEP_03 until Periods.STEP_04 -> {
+                    title = Titles.STEP_03
+                }
+                in Periods.STEP_04 until Periods.STEP_05 -> {
+                    title = Titles.STEP_04
+                }
+                in Periods.STEP_05 until Periods.STEP_06 -> {
+                    title = Titles.STEP_05
+                }
+                in Periods.STEP_06 until Periods.STEP_07 -> {
+                    title = Titles.STEP_06
+                }
+                in Periods.STEP_07 until Periods.STEP_08 -> {
+                    title = Titles.STEP_07
+                }
+                else -> {
+                    title = Titles.STEP_08
+                }
+            }
+
+            val isTitleRenewed = originalTitle != title
+            val isNewRecord =  targetPeriod > recode
+
+            showCongratulatoryMessage(isTitleRenewed, isNewRecord, targetPeriod, title)
+            updateRecordTitle()
+        }
+    }
+
+    private fun showCongratulatoryMessage(isNewRecord: Boolean, isTitleRenewed: Boolean,
+                                          period: Int, title: String) {
+        val congratulatoryMessageDialogFragment = CongratulatoryMessageDialogFragment()
+
+        congratulatoryMessageDialogFragment.setData(isNewRecord, isTitleRenewed, period, title)
+        congratulatoryMessageDialogFragment.show((activity as MainActivity).supportFragmentManager, TAG)
+    }
+
+    private fun updateRecordTitle() {
+        val preferences =
+            requireContext().getSharedPreferences(PROGRESS_PREFERENCES, Context.MODE_PRIVATE)
+        val editor = preferences.edit()
+
+        editor.putInt(KEY_RECODE, recode)
+        editor.putString(KEY_TITLE, title)
+        editor.apply()
     }
 
     private fun setUI() {
@@ -130,6 +196,12 @@ class ProgressFragment : Fragment(), SetPeriodDialogFragment.OnSetPeriodListener
         editor.apply()
 
         clearUI()
+    }
+
+    private fun serviceTest () {
+        val intent = Intent(requireContext(), UpdateJobIntentService::class.java)
+        requireContext().startService(intent)
+        UpdateJobIntentService().enqueueWork(requireContext(), intent)
     }
 
     private fun clearUI() {
